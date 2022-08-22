@@ -14,6 +14,7 @@ int main(int argc, char** argv)
 	cin >> message;
 	cin >> key;
 
+	//100개의 메시지를 받는데, 그럴때 마다 5*5 테이블을 검사하긴 자원 낭비라 생각. set을 생성하여 중복검사
 	set<char> keyOccupySet;
 	for (auto i : key)
 	{
@@ -49,6 +50,8 @@ int main(int argc, char** argv)
 			continue;
 		}
 
+		//홀짝수 변수 만드는 게 덜 헷갈릴듯 함
+		//또한 int로 인덱싱 하는 것 보다 반복자를 두는 게 덜 헷갈릴 듯
 		if (outMessagePointer % 2 == 1)
 		{
 			if (outMessage[outMessagePointer-1] == *i)
@@ -75,6 +78,8 @@ int main(int argc, char** argv)
 	if (outMessagePointer % 2 == 1)
 		outMessage.push_back('X');
 
+	// 이건 5*5 테이블에서 어떤 좌표를 갖고 있는지 맵으로 표현
+	// 메시지 입력이 길기 때문에 5*5에서 일일히 서치하기는 비효율적이라 생각했음
 	map<char, pair<int, int>> xyMap;
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++)
@@ -87,6 +92,9 @@ int main(int argc, char** argv)
 
 	for (auto i = outMessage.begin(); i < prev(outMessage.end()); i = i+2)
 	{
+		//이전에는 이거없이 아래에 그냥 *i로 바꿨는데 오류가 발생했음
+		// 원본 데이터를 지켜줘야 함. 까먹기 쉬울듯
+		// 변수명명을 좀 잘해야 할 듯
 		char i0Temp = *i;
 		char i1Temp = *(i+1);
 		if (xyMap[*i].first == xyMap[*(i+1)].first)
@@ -108,6 +116,7 @@ int main(int argc, char** argv)
 		continue;
 	}
 
+	//endl보다 \n이 빠르다 하는데?
 	cout<<outMessage<<endl;
 			
 	return 0;
